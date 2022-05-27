@@ -23,7 +23,7 @@ static void minusculaEnLugar_debe_respetar_la_longitud_maxima(void);
 int main(void)
 {
     TimerSysTick_init();
-    TimerSysTick_esperaMilisegundos(500);
+    TimerSysTick_esperaMilisegundos(1000);
     UNITY_BEGIN();
     
     RUN_TEST(copiaMemoria_debe_copiar_cero_bytes);
