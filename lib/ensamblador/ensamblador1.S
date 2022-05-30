@@ -101,7 +101,7 @@ defun mayusculaEnLugar
 
     inicio_mayus:
         // traigo la cadena de la memoria al registro
-        ldrb    R2, [R0], #1
+        ldrb    R2, [R0]
 
         // comparo la cadena con el terminador nulo
         cmp     R2, #0x00   
@@ -109,28 +109,24 @@ defun mayusculaEnLugar
 
         // comparo la longitud de la cadena con la longitud maxima
         cmp     R3, R1
-        beq     T_Nulo
+        beq     Retornar_mayusculas
+
+        // incremento el contador
+        add     R3, R3, #1
 
         // Es mayuscula? comparo con 90 que equivale a Z mayuscula
         cmp     R2, #90
         bhs     Minus       // si es mayor que 90 no es mayuscula, salto a minuscula
 
-        // incremento el contador
-        add     R3, R3, #1
 
     Mayus:
         strb    R2, [R0] ,#1        // lo guardo en el registro
         b   inicio_mayus    // retorno al inicio de la funcion
 
     Minus:
-        add     R2, R2, #32         // Le sumo 32, ya que la diferencia entre minuscula y mayusculas en ascii son 32 numeros
+        add     R2, R2, #-32         // Le sumo 32, ya que la diferencia entre minuscula y mayusculas en ascii son 32 numeros
         strb    R2, [R0] ,#1       // lo guardo en el registro
         b       inicio_mayus    // retorno al inicio de la funcion
-
-    T_Nulo:
-        mov R2, #0x00       // si llega a la longitud maxima guardo en la cadena el terminador nulo
-        strb R3, [R0]
-        b   Retornar_mayusculas
 
     Retornar_mayusculas:
         bx lr

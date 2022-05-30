@@ -12,6 +12,7 @@ static void copiaMemoria_debe_copiar_una_palabra(void);
 static void copiaMemoria_debe_copiar_una_palabra_mal_alineada(void);
 static void copiaCadena_debe_copiar_una_cadena(void);
 static void copiaCadena_debe_respetar_el_espacio_de_destino(void);
+static void copiaCadena_debe_respetar_el_espacio_de_destino_0(void);
 static void mayusculaEnLugar_debe_pasar_a_mayuscula_una_cadena(void);
 static void mayusculaEnLugar_debe_respetar_la_longitud_maxima(void);
 static void minusculaEnLugar_debe_pasar_a_minuscula_una_cadena(void);
@@ -23,20 +24,21 @@ static void minusculaEnLugar_debe_respetar_la_longitud_maxima(void);
 int main(void)
 {
     TimerSysTick_init();
-    TimerSysTick_esperaMilisegundos(1000);
+    TimerSysTick_esperaMilisegundos(1500);
     UNITY_BEGIN();
     
     RUN_TEST(copiaMemoria_debe_copiar_cero_bytes);
-    // RUN_TEST(copiaMemoria_debe_copiar_un_byte);
-    // RUN_TEST(copiaMemoria_debe_copiar_media_palabra);
-    // RUN_TEST(copiaMemoria_debe_copiar_una_palabra);
-    // RUN_TEST(copiaMemoria_debe_copiar_una_palabra_mal_alineada);
+    RUN_TEST(copiaMemoria_debe_copiar_un_byte);
+    RUN_TEST(copiaMemoria_debe_copiar_media_palabra);
+    RUN_TEST(copiaMemoria_debe_copiar_una_palabra);
+    RUN_TEST(copiaMemoria_debe_copiar_una_palabra_mal_alineada); 
     
-    // RUN_TEST(copiaCadena_debe_copiar_una_cadena);
-    // RUN_TEST(copiaCadena_debe_respetar_el_espacio_de_destino);
-    
-    // RUN_TEST(mayusculaEnLugar_debe_pasar_a_mayuscula_una_cadena);
-    // RUN_TEST(mayusculaEnLugar_debe_respetar_la_longitud_maxima);
+    RUN_TEST(copiaCadena_debe_copiar_una_cadena);
+    RUN_TEST(copiaCadena_debe_respetar_el_espacio_de_destino);
+    RUN_TEST(copiaCadena_debe_respetar_el_espacio_de_destino_0);
+
+    RUN_TEST(mayusculaEnLugar_debe_pasar_a_mayuscula_una_cadena);
+    RUN_TEST(mayusculaEnLugar_debe_respetar_la_longitud_maxima);
     
     // RUN_TEST(minusculaEnLugar_debe_pasar_a_minuscula_una_cadena);
     // RUN_TEST(minusculaEnLugar_debe_respetar_la_longitud_maxima);
@@ -102,7 +104,7 @@ static void copiaCadena_debe_copiar_una_cadena(void)
 {
     const char origen[] =   "Cadena";
     char destino[17]    =   "0123456789ABCDEF";
-    const char esperado[17]="Cadena" "\0" "789ABCDEF";
+    const char esperado[17]= "Cadena" "\0" "789ABCDEF";
     copiaCadena(origen,destino,sizeof(destino));
     TEST_ASSERT_EQUAL_CHAR_ARRAY(esperado,destino,17);
 }
@@ -113,6 +115,15 @@ static void copiaCadena_debe_respetar_el_espacio_de_destino(void)
     char destino[17]    =   "0123456789ABCDEF";
     const char esperado[17]="Cad" "\0" "456789ABCDEF";
     copiaCadena(origen,destino,4);
+    TEST_ASSERT_EQUAL_CHAR_ARRAY(esperado,destino,17);
+}
+
+static void copiaCadena_debe_respetar_el_espacio_de_destino_0(void)
+{
+    const char origen[] =   "Cadena";
+    char destino[17]    =   "0123456789ABCDEF";
+    const char esperado[17]="0123456789ABCDEF";
+    copiaCadena(origen,destino+3,0);
     TEST_ASSERT_EQUAL_CHAR_ARRAY(esperado,destino,17);
 }
 
