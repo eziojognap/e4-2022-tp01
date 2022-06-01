@@ -114,16 +114,17 @@ defun mayusculaEnLugar
         // incremento el contador
         add     R3, R3, #1
 
-        // Es mayuscula? comparo con 90 que equivale a Z mayuscula
-        cmp     R2, #90
+        // Es mayuscula? comparo con Z mayuscula
+        cmp     R2, 'Z'
         bhs     Minus       // si es mayor que 90 no es mayuscula, salto a minuscula
-
 
     Mayus:
         strb    R2, [R0] ,#1        // lo guardo en el registro
         b   inicio_mayus    // retorno al inicio de la funcion
 
     Minus:
+        cmp     R2, 'a' // comparo con 'A' para ver si es una letra
+        blo     Mayus // significa que no es un valor de letra en el codigo ascii y salto a Mayus que guarda el valor en memoria
         add     R2, R2, #-32         // Le sumo 32, ya que la diferencia entre minuscula y mayusculas en ascii son 32 numeros
         strb    R2, [R0] ,#1       // lo guardo en el registro
         b       inicio_mayus    // retorno al inicio de la funcion
@@ -151,7 +152,7 @@ defun minusculaEnLugar
 
     inicio_minus:
         // traigo la cadena de la memoria al registro
-        ldrb    R2, [R0], #1
+        ldrb    R2, [R0]
 
         // comparo la cadena con el terminador nulo
         cmp     R2, #0x00   
@@ -159,28 +160,26 @@ defun minusculaEnLugar
 
         // comparo la longitud de la cadena con la longitud maxima
         cmp     R3, R1
-        beq     T_Nulo_m
-
-        // Es minuscula? comparo con 97 que equivale a "a" minuscula
-        cmp     R2, #97
-        blo     Mayus_m     // si es menor que 97 no es minuscula, salto a mayuscula
+        beq     Retornar_Minus
 
         // incremento el contador
         add     R3, R3, #1
+
+        // Es minuscula? comparo con 'a' minuscula
+        cmp     R2, 'a'
+        blo     Mayus_m     // si es menor que 97 no es minuscula, salto a mayuscula
+
 
     Minus_m:
         strb    R2, [R0], #1        // lo guardo en el registro
         b   inicio_minus    // retorno al inicio de la funcion
 
     Mayus_m:
-        add     R2, R2, #-32        // Le resto 32, ya que la diferencia entre minuscula y mayusculas en ascii son 32 numeros
+        cmp     R2, 'A' // comparo con 'A' para ver si es una letra
+        blo     Minus_m // significa que no es un valor de letra en el codigo ascii y salgo a minus que guarda el valor en la memoria
+        add     R2, R2, #32        // Le resto 32, ya que la diferencia entre minuscula y mayusculas en ascii son 32 numeros
         strb    R2, [R0] , #1       // lo guardo en el registro
         b       inicio_minus    // retorno al inicio de la funcion
-
-    T_Nulo_m:
-        mov R2, #0x00       // si llega a la longitud maxima guardo en la cadena el terminador nulo
-        strb R3, [R0]
-        b   Retornar_Minus
 
     Retornar_Minus:
         bx lr

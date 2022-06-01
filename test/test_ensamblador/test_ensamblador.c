@@ -40,8 +40,8 @@ int main(void)
     RUN_TEST(mayusculaEnLugar_debe_pasar_a_mayuscula_una_cadena);
     RUN_TEST(mayusculaEnLugar_debe_respetar_la_longitud_maxima);
     
-    // RUN_TEST(minusculaEnLugar_debe_pasar_a_minuscula_una_cadena);
-    // RUN_TEST(minusculaEnLugar_debe_respetar_la_longitud_maxima);
+    RUN_TEST(minusculaEnLugar_debe_pasar_a_minuscula_una_cadena);
+    RUN_TEST(minusculaEnLugar_debe_respetar_la_longitud_maxima);
     return UNITY_END();   
 }
 
@@ -144,6 +144,14 @@ static void mayusculaEnLugar_debe_respetar_la_longitud_maxima(void)
     mayusculaEnLugar(cadena,3);
     TEST_ASSERT_EQUAL_CHAR_ARRAY(esperado,cadena,sizeof(esperado));
 }
+
+// static void mayusculaEnLugar_debe_pasar_a_mayuscula_una_cadena_fuera_de_rango(void)
+// {
+//     char cadena[] = "CaDeNa123";
+//     const char esperado[]="CADENA123";
+//     mayusculaEnLugar(cadena,sizeof(cadena));
+//     TEST_ASSERT_EQUAL_CHAR_ARRAY(esperado,cadena,sizeof(esperado));
+// }
 
 /* Pruebas para minusculaEnLugar */
 
